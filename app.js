@@ -512,39 +512,97 @@ function buildPreloader(t) {
     <p id="preloader-eyebrow" class="eyebrow shimmer">${t.preEyebrow}</p>
 
     <div class="floating-element" style="position:relative; display:flex; justify-content:center; align-items:center;">
-      <!-- Swirling Debris Field (Rose petals & gold leaf flakes) -->
-      <div id="debris-aura" style="position:absolute; width:340px; height:340px; pointer-events:none; z-index:2;" aria-hidden="true">
+      <!-- Multi-layered Swirling Debris Field (Rose petals, gold flakes & starlight) -->
+      <div id="debris-aura" style="position:absolute; width:380px; height:380px; pointer-events:none; z-index:2;" aria-hidden="true">
+        <!-- Orbiting Rose Petal 1 -->
         <div style="position:absolute; top:0; left:50%; animation: orbitDebris 12s linear infinite;">
-          <svg width="14" height="14" viewBox="0 0 20 20" style="color:var(--rose)"><path d="M10 2 C 6 5, 4 10, 6 14 C 8 17, 12 17, 14 14 C 16 10, 14 5, 10 2 Z" fill="currentColor"/></svg>
+          <svg width="18" height="18" viewBox="0 0 20 20" style="color:var(--rose)"><path d="M10 2 C 6 5, 4 10, 6 14 C 8 17, 12 17, 14 14 C 16 10, 14 5, 10 2 Z" fill="currentColor"/></svg>
         </div>
+        <!-- Orbiting Gold Leaf Flake 1 -->
         <div style="position:absolute; top:50%; left:100%; animation: orbitDebris 16s linear infinite reverse;">
-          <div style="width:6px; height:6px; background:#C59B6C; border-radius:50%; box-shadow:0 0 8px #C59B6C;"></div>
+          <div style="width:7px; height:7px; background:#C59B6C; border-radius:50%; box-shadow:0 0 10px #C59B6C;"></div>
         </div>
+        <!-- Orbiting Rose Petal 2 -->
         <div style="position:absolute; bottom:0; left:30%; animation: orbitDebris 14s linear infinite;">
-          <svg width="16" height="16" viewBox="0 0 20 20" style="color:var(--rose-deep)"><path d="M10 2 C 6 5, 4 10, 6 14 C 8 17, 12 17, 14 14 C 16 10, 14 5, 10 2 Z" fill="currentColor"/></svg>
+          <svg width="20" height="20" viewBox="0 0 20 20" style="color:var(--rose-deep)"><path d="M10 2 C 6 5, 4 10, 6 14 C 8 17, 12 17, 14 14 C 16 10, 14 5, 10 2 Z" fill="currentColor"/></svg>
+        </div>
+        <!-- Orbiting Gold Leaf Flake 2 -->
+        <div style="position:absolute; top:20%; left:5%; animation: orbitDebris 20s linear infinite;">
+          <div style="width:5px; height:5px; background:#F5D3A6; border-radius:50%; box-shadow:0 0 8px #F5D3A6;"></div>
         </div>
       </div>
 
       <button id="envelope-btn" aria-label="Open envelope">
         <div id="envelope-letter">
           <div id="envelope-letter-inner">
+            <svg width="36" height="18" viewBox="0 0 40 20" style="margin:0 auto 0.4rem auto; display:block; color:var(--rose-gold)" aria-hidden="true">
+              <path d="M20 0 L23 7 L30 10 L23 13 L20 20 L17 13 L10 10 L17 7 Z" fill="currentColor"/>
+            </svg>
             <p class="eyebrow" id="env-letter-eyebrow">${t.heroEyebrow}</p>
             <p class="script-hand" style="font-size:clamp(1.875rem,5vw,2.25rem)" id="env-letter-title">${t.heroTitle}</p>
           </div>
         </div>
         <div id="envelope-body" class="bloom-in">
-          <img src="assets/seal.jpg" alt="" loading="eager"/>
+          <svg class="envelope-pocket-svg" viewBox="0 0 100 68" preserveAspectRatio="none" shape-rendering="geometricPrecision">
+            <defs>
+              <linearGradient id="interior-rose-lining" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#9C5A6A"/>
+                <stop offset="50%" stop-color="#B87383"/>
+                <stop offset="100%" stop-color="#D494A3"/>
+              </linearGradient>
+
+              <linearGradient id="side-fold-left" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#F5DFE4"/>
+                <stop offset="100%" stop-color="#E6B5C1"/>
+              </linearGradient>
+              <linearGradient id="side-fold-right" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#F2D8DE"/>
+                <stop offset="100%" stop-color="#E0ADB9"/>
+              </linearGradient>
+
+              <linearGradient id="bottom-fold-grad" x1="0.5" y1="1" x2="0.5" y2="0">
+                <stop offset="0%" stop-color="#E2B0BC"/>
+                <stop offset="65%" stop-color="#EBC4CD"/>
+                <stop offset="100%" stop-color="#F5DFE4"/>
+              </linearGradient>
+
+              <filter id="pocket-fold-shadow" x="-10%" y="-20%" width="120%" height="140%">
+                <feDropShadow dx="0" dy="-2" stdDeviation="2.5" flood-color="#7C3B4A" flood-opacity="0.2"/>
+              </filter>
+            </defs>
+
+            <!-- Soft Dusty Rosewood Interior Lining -->
+            <rect width="100" height="68" fill="url(#interior-rose-lining)"/>
+
+            <!-- Left & Right Side Folds -->
+            <path d="M0 0 L48 33 Q50 34 52 33 L100 0 L100 68 L0 68 Z" fill="none"/>
+            <path d="M0 0 L48 33 L0 68 Z" fill="url(#side-fold-left)"/>
+            <path d="M100 0 L52 33 L100 68 Z" fill="url(#side-fold-right)"/>
+
+            <!-- Bottom Main Pocket Fold -->
+            <path d="M0 68 L48 33.5 Q50 32 52 33.5 L100 68 Z" fill="url(#bottom-fold-grad)" filter="url(#pocket-fold-shadow)"/>
+
+            <!-- Delicate Champagne Gold Foil Crease Strokes -->
+            <path d="M0 68 L48 33.5 Q50 32 52 33.5 L100 68" fill="none" stroke="#D4AF37" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+            <path d="M0 0 L48 33 M100 0 L52 33" fill="none" stroke="#D4AF37" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+          </svg>
           <div id="envelope-overlay"></div>
         </div>
         <div id="envelope-flap">
-          <svg viewBox="0 0 100 55" preserveAspectRatio="none">
+          <svg viewBox="0 0 100 48" preserveAspectRatio="none" shape-rendering="geometricPrecision">
             <defs>
               <linearGradient id="flap-grad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stop-color="#C59B6C"/>
-                <stop offset="100%" stop-color="#4A1525"/>
+                <stop offset="0%"   stop-color="#F6DDE2"/>
+                <stop offset="60%"  stop-color="#EBC5CE"/>
+                <stop offset="100%" stop-color="#DC9FB0"/>
               </linearGradient>
+              <filter id="flap-shadow" x="-10%" y="0%" width="120%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#7C3B4A" flood-opacity="0.18"/>
+              </filter>
             </defs>
-            <path d="M0 0 L100 0 L50 55 Z" fill="url(#flap-grad)"/>
+            <!-- Perfectly Proportioned 44% V-Tip Flap -->
+            <path d="M0 0 L100 0 L52 46.5 Q50 48 48 46.5 Z" fill="url(#flap-grad)" filter="url(#flap-shadow)"/>
+            <path d="M0 0 L48 46.5 Q50 48 52 46.5 L100 0" fill="none" stroke="#D4AF37" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
           </svg>
           <div id="wax-seal">
             ${svgHeart("heartbeat")}
@@ -565,10 +623,28 @@ function buildPreloader(t) {
 
   const btn = document.getElementById("envelope-btn");
   let opening = false;
+
+  // Interactive 3D Mouse Parallax & Gyro Tilt
+  const wrapper = btn.closest(".floating-element");
+  if (wrapper) {
+    wrapper.addEventListener("mousemove", (e) => {
+      if (opening) return;
+      const rect = wrapper.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      btn.style.transform = `perspective(1000px) rotateY(${x * 20}deg) rotateX(${-y * 20}deg) scale(1.04)`;
+    });
+    wrapper.addEventListener("mouseleave", () => {
+      if (opening) return;
+      btn.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)`;
+    });
+  }
+
   btn.addEventListener("click", (evt) => {
     if (opening) return;
     opening = true;
     btn.disabled = true;
+    btn.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.05)`;
 
     // Trigger Particle Disintegration Explosion
     if (antigravityCanvas) {
@@ -592,8 +668,8 @@ function buildPreloader(t) {
         isOpened = true;
         createPetals();
         initReveal();
-      }, 700);
-    }, 950);
+      }, 750);
+    }, 1250);
   });
 }
 
