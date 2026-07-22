@@ -350,6 +350,153 @@ function initReveal() {
   });
 }
 
+// ── Antigravity Particle & Filament Canvas ────────────────
+class AntigravityCanvas {
+  constructor() {
+    this.canvas = document.getElementById("antigravity-canvas");
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext("2d");
+    this.particles = [];
+    this.filaments = [];
+    this.burstParticles = [];
+    this.resize();
+    this.initParticles();
+    this.initFilaments();
+    window.addEventListener("resize", () => this.resize());
+    requestAnimationFrame((t) => this.animate(t));
+  }
+
+  resize() {
+    this.width = this.canvas.width = window.innerWidth;
+    this.height = this.canvas.height = window.innerHeight;
+  }
+
+  initParticles() {
+    this.particles = [];
+    for (let i = 0; i < 45; i++) {
+      this.particles.push({
+        x: Math.random() * this.width,
+        y: Math.random() * this.height,
+        radius: Math.random() * 2.5 + 1,
+        alpha: Math.random() * 0.6 + 0.2,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: -0.2 - Math.random() * 0.4,
+        pulseSpeed: 0.01 + Math.random() * 0.02,
+      });
+    }
+  }
+
+  initFilaments() {
+    this.filaments = [];
+    for (let i = 0; i < 8; i++) {
+      this.filaments.push({
+        x: Math.random() * this.width,
+        y: Math.random() * this.height,
+        length: 80 + Math.random() * 120,
+        angle: Math.random() * Math.PI * 2,
+        speed: 0.003 + Math.random() * 0.004,
+        alpha: 0.2 + Math.random() * 0.35,
+      });
+    }
+  }
+
+  triggerDisintegration(originX, originY) {
+    for (let i = 0; i < 90; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 7;
+      this.burstParticles.push({
+        x: originX,
+        y: originY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.5,
+        size: 3 + Math.random() * 6,
+        alpha: 1,
+        life: 1,
+        decay: 0.008 + Math.random() * 0.012,
+        isHeart: Math.random() > 0.4,
+        color: Math.random() > 0.5 ? "rgba(197, 155, 108, " : "rgba(180, 50, 80, ",
+      });
+    }
+  }
+
+  animate() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    // Render soft light particles
+    this.particles.forEach((p) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha += Math.sin(Date.now() * p.pulseSpeed) * 0.005;
+
+      if (p.y < -10) p.y = this.height + 10;
+      if (p.x < -10) p.x = this.width + 10;
+      if (p.x > this.width + 10) p.x = -10;
+
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(255, 240, 245, ${Math.max(0.1, p.alpha)})`;
+      this.ctx.shadowBlur = 10;
+      this.ctx.shadowColor = "rgba(197, 155, 108, 0.5)";
+      this.ctx.fill();
+    });
+
+    // Render translucent rose-gold filaments
+    this.filaments.forEach((f) => {
+      f.angle += f.speed;
+      const endX = f.x + Math.cos(f.angle) * f.length;
+      const endY = f.y + Math.sin(f.angle) * f.length;
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(f.x, f.y);
+      this.ctx.quadraticCurveTo(
+        f.x + Math.sin(f.angle) * 40,
+        f.y + Math.cos(f.angle) * 40,
+        endX,
+        endY
+      );
+      this.ctx.strokeStyle = `rgba(197, 155, 108, ${f.alpha})`;
+      this.ctx.lineWidth = 1.2;
+      this.ctx.stroke();
+    });
+
+    // Render particle disintegration burst
+    for (let i = this.burstParticles.length - 1; i >= 0; i--) {
+      const bp = this.burstParticles[i];
+      bp.x += bp.vx;
+      bp.y += bp.vy;
+      bp.vx *= 0.98;
+      bp.vy *= 0.98;
+      bp.life -= bp.decay;
+
+      if (bp.life <= 0) {
+        this.burstParticles.splice(i, 1);
+        continue;
+      }
+
+      this.ctx.save();
+      this.ctx.translate(bp.x, bp.y);
+      this.ctx.fillStyle = `${bp.color}${bp.life})`;
+      if (bp.isHeart) {
+        this.ctx.beginPath();
+        this.ctx.arc(-bp.size / 3, -bp.size / 3, bp.size / 3, 0, Math.PI);
+        this.ctx.arc(bp.size / 3, -bp.size / 3, bp.size / 3, 0, Math.PI);
+        this.ctx.lineTo(0, bp.size / 2);
+        this.ctx.closePath();
+        this.ctx.fill();
+      } else {
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, bp.size / 2, 0, Math.PI * 2);
+        this.ctx.fill();
+      }
+      this.ctx.restore();
+    }
+
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+let antigravityCanvas = null;
+
 // ── Preloader / Envelope ───────────────────────────────────
 function buildPreloader(t) {
   const preloader = document.getElementById("preloader");
@@ -364,36 +511,53 @@ function buildPreloader(t) {
     <div id="preloader-blush"></div>
     <p id="preloader-eyebrow" class="eyebrow shimmer">${t.preEyebrow}</p>
 
-    <button id="envelope-btn" aria-label="Open envelope">
-      <div id="envelope-letter">
-        <div id="envelope-letter-inner">
-          <p class="eyebrow" id="env-letter-eyebrow">${t.heroEyebrow}</p>
-          <p class="script-hand" style="font-size:clamp(1.875rem,5vw,2.25rem)" id="env-letter-title">${t.heroTitle}</p>
+    <div class="floating-element" style="position:relative; display:flex; justify-content:center; align-items:center;">
+      <!-- Swirling Debris Field (Rose petals & gold leaf flakes) -->
+      <div id="debris-aura" style="position:absolute; width:340px; height:340px; pointer-events:none; z-index:2;" aria-hidden="true">
+        <div style="position:absolute; top:0; left:50%; animation: orbitDebris 12s linear infinite;">
+          <svg width="14" height="14" viewBox="0 0 20 20" style="color:var(--rose)"><path d="M10 2 C 6 5, 4 10, 6 14 C 8 17, 12 17, 14 14 C 16 10, 14 5, 10 2 Z" fill="currentColor"/></svg>
+        </div>
+        <div style="position:absolute; top:50%; left:100%; animation: orbitDebris 16s linear infinite reverse;">
+          <div style="width:6px; height:6px; background:#C59B6C; border-radius:50%; box-shadow:0 0 8px #C59B6C;"></div>
+        </div>
+        <div style="position:absolute; bottom:0; left:30%; animation: orbitDebris 14s linear infinite;">
+          <svg width="16" height="16" viewBox="0 0 20 20" style="color:var(--rose-deep)"><path d="M10 2 C 6 5, 4 10, 6 14 C 8 17, 12 17, 14 14 C 16 10, 14 5, 10 2 Z" fill="currentColor"/></svg>
         </div>
       </div>
-      <div id="envelope-body" class="bloom-in">
-        <img src="assets/seal.jpg" alt="" loading="eager"/>
-        <div id="envelope-overlay"></div>
-      </div>
-      <div id="envelope-flap">
-        <svg viewBox="0 0 100 55" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="flap-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="oklch(0.72 0.09 55)"/>
-              <stop offset="100%" stop-color="oklch(0.62 0.11 20)"/>
-            </linearGradient>
-          </defs>
-          <path d="M0 0 L100 0 L50 55 Z" fill="url(#flap-grad)"/>
-        </svg>
-        <div id="wax-seal">
-          ${svgHeart("heartbeat")}
-        </div>
-      </div>
-    </button>
 
-    <div id="open-label">
-      <span class="label-text script-hand" id="open-with-love-text">${t.openWithLove}</span>
-      ${svgHeart("heartbeat")}
+      <button id="envelope-btn" aria-label="Open envelope">
+        <div id="envelope-letter">
+          <div id="envelope-letter-inner">
+            <p class="eyebrow" id="env-letter-eyebrow">${t.heroEyebrow}</p>
+            <p class="script-hand" style="font-size:clamp(1.875rem,5vw,2.25rem)" id="env-letter-title">${t.heroTitle}</p>
+          </div>
+        </div>
+        <div id="envelope-body" class="bloom-in">
+          <img src="assets/seal.jpg" alt="" loading="eager"/>
+          <div id="envelope-overlay"></div>
+        </div>
+        <div id="envelope-flap">
+          <svg viewBox="0 0 100 55" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="flap-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#C59B6C"/>
+                <stop offset="100%" stop-color="#4A1525"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 0 L100 0 L50 55 Z" fill="url(#flap-grad)"/>
+          </svg>
+          <div id="wax-seal">
+            ${svgHeart("heartbeat")}
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <div id="open-label" style="margin-top: 2rem;">
+      <span class="label-text woven-light-label" id="open-with-love-text">${t.openWithLove}</span>
+      <div class="velvet-heart-pearl pulse-glow" style="width:1.75rem; height:1.75rem;">
+        ${svgHeart("")}
+      </div>
     </div>
   `;
 
@@ -401,10 +565,18 @@ function buildPreloader(t) {
 
   const btn = document.getElementById("envelope-btn");
   let opening = false;
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (evt) => {
     if (opening) return;
     opening = true;
     btn.disabled = true;
+
+    // Trigger Particle Disintegration Explosion
+    if (antigravityCanvas) {
+      const rect = btn.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      antigravityCanvas.triggerDisintegration(centerX, centerY);
+    }
 
     document.getElementById("envelope-flap")?.classList.add("opening-flap");
     document.getElementById("wax-seal")?.classList.add("breaking");
@@ -596,6 +768,8 @@ function setLang(lang) {
 // ── Init ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   document.body.style.overflow = "hidden";
+
+  antigravityCanvas = new AntigravityCanvas();
 
   const t = T[currentLang];
   buildPreloader(t);

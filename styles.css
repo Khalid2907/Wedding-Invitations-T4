@@ -13,14 +13,18 @@
   --cream:      oklch(0.975 0.014 75);
   --blush:      oklch(0.93  0.035 20);
   --rose:       oklch(0.82  0.075 15);
-  --rose-deep:  oklch(0.62  0.11  20);
+  --rose-deep:  #4A1525;
   --sage:       oklch(0.78  0.038 145);
-  --gold:       oklch(0.72  0.09  55);
-  --ink:        oklch(0.32  0.04  25);
+  --gold:       #C59B6C;
+  --ink:        #2D121A;
+
+  --burgundy:   #4A1525;
+  --espresso:   #2D121A;
+  --rose-gold:  #C59B6C;
 
   --background:         oklch(0.975 0.014 75);
-  --foreground:         oklch(0.32  0.04  25);
-  --border:             oklch(0.62  0.11  20 / 20%);
+  --foreground:         #2D121A;
+  --border:             rgba(197, 155, 108, 0.35);
 
   --gradient-page:
     linear-gradient(180deg,
@@ -34,8 +38,9 @@
       oklch(0.88 0.06 15 / 0.5) 0%,
       transparent 60%);
 
-  --shadow-soft:  0 30px 60px -30px oklch(0.62 0.11 20 / 0.25);
-  --shadow-petal: 0 20px 50px -20px oklch(0.72 0.09 55 / 0.35);
+  --shadow-soft:  0 30px 60px -30px rgba(45, 18, 26, 0.25);
+  --shadow-petal: 0 20px 50px -20px rgba(197, 155, 108, 0.35);
+  --shadow-glass: 0 20px 50px rgba(45, 18, 26, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
 }
 
 /* ── Reset / Base ── */
@@ -61,18 +66,32 @@ a { text-decoration: none; }
 button { background: none; cursor: pointer; border: none; font: inherit; }
 img { display: block; max-width: 100%; }
 
-/* RTL overrides */
+/* RTL overrides & Arabic Typography */
 html[dir="rtl"] body {
-  font-family: "Amiri", serif;
+  font-family: "Tajawal", "Cairo", sans-serif;
+  line-height: 1.9;
   letter-spacing: 0;
+  color: var(--espresso);
 }
 html[dir="rtl"] h1,
 html[dir="rtl"] h2,
 html[dir="rtl"] h3,
-html[dir="rtl"] h4 {
-  font-family: "Amiri", serif;
+html[dir="rtl"] h4,
+html[dir="rtl"] .hero-title,
+html[dir="rtl"] .arabic-heading {
+  font-family: "Aref Ruqaa", "Amiri", serif;
+  line-height: 1.6;
+  font-weight: 700;
+  color: var(--burgundy);
+}
+html[dir="rtl"] p,
+html[dir="rtl"] .eyebrow {
+  font-family: "Tajawal", "Cairo", sans-serif;
+  line-height: 2.0;
 }
 html[dir="rtl"] .script-hand {
+  font-family: "Aref Ruqaa", "Amiri", serif;
+}
   font-family: "Marhey", cursive !important;
 }
 html[dir="rtl"] .eyebrow {
@@ -256,9 +275,45 @@ html[dir="rtl"] .eyebrow {
 .overflow-hidden { overflow: hidden; }
 .pointer-events-none { pointer-events: none; }
 
-/* ── Language Toggle ── */
+/* ── Antigravity Particle Canvas ── */
+#antigravity-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
 
-#lang-toggle {
+/* ── Antigravity Zero-Gravity Floating Keyframes ── */
+@keyframes floatAntigravity {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  50%  { transform: translateY(-14px) rotate(1.2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes pulsePearl {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(20, 5, 10, 0.8), inset 0 0 8px rgba(197, 155, 108, 0.6);
+  }
+  50% {
+    transform: scale(1.12);
+    box-shadow: 0 0 25px rgba(197, 155, 108, 0.7), inset 0 0 14px rgba(255, 230, 200, 0.9);
+  }
+}
+
+@keyframes orbitDebris {
+  0% { transform: rotate(0deg) translateX(110px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
+}
+
+.floating-element {
+  animation: floatAntigravity 7s ease-in-out infinite;
+}
+
+/* ── Glass Charm Language Toggle ── */
+#lang-toggle.glass-charm {
   position: fixed;
   top: 1.25rem;
   right: 1.25rem;
@@ -266,24 +321,59 @@ html[dir="rtl"] .eyebrow {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.25rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: transform 0.5s ease;
-  background: oklch(1 0 0 / 0.55);
-  border: 1px solid oklch(0.62 0.11 20 / 0.35);
-  color: var(--rose-deep);
-  box-shadow: var(--shadow-soft);
-  font-weight: 500;
+  font-size: 0.8rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.4s ease;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(197, 155, 108, 0.45);
+  color: var(--burgundy);
+  box-shadow: 0 10px 30px rgba(45, 18, 26, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  font-weight: 600;
   letter-spacing: 0.05em;
   cursor: pointer;
 }
-#lang-toggle:hover { transform: scale(1.05); }
+#lang-toggle.glass-charm:hover {
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 15px 35px rgba(197, 155, 108, 0.3);
+}
 #lang-toggle svg { flex-shrink: 0; }
 
 html[dir="rtl"] #lang-toggle { right: auto; left: 1.25rem; }
+
+/* ── Velvet Heart Pearl ── */
+.velvet-heart-pearl {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #3D1220 0%, #15050A 70%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C59B6C;
+  border: 1px solid rgba(197, 155, 108, 0.5);
+  animation: pulsePearl 3s ease-in-out infinite;
+  cursor: pointer;
+}
+.velvet-heart-pearl svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  filter: drop-shadow(0 0 4px rgba(197, 155, 108, 0.8));
+}
+
+/* ── Woven Light Pattern Label ── */
+.woven-light-label {
+  background: linear-gradient(90deg, #4A1525 0%, #C59B6C 50%, #4A1525 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 12px rgba(197, 155, 108, 0.4);
+  font-family: "Aref Ruqaa", "Amiri", serif;
+  letter-spacing: 0.1em;
+}
 
 /* ── Preloader ── */
 
@@ -479,9 +569,10 @@ section {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-    oklch(0.975 0.014 75 / 0.4)  0%,
-    oklch(0.955 0.024 25 / 0.55) 50%,
-    oklch(0.98  0.014 60 / 0.85) 100%);
+    rgba(0, 0, 0, 0.22) 0%,
+    rgba(30, 10, 18, 0.18) 50%,
+    rgba(0, 0, 0, 0.25) 100%);
+  backdrop-filter: brightness(0.96);
 }
 
 .hero-sprig-left {
@@ -489,14 +580,14 @@ section {
   top: 2rem;
   left: 1rem;
   width: 4rem;
-  color: oklch(0.78 0.038 145 / 0.7);
+  color: rgba(197, 155, 108, 0.7);
 }
 .hero-sprig-right {
   position: absolute;
   bottom: 4rem;
   right: 1rem;
   width: 4rem;
-  color: oklch(0.78 0.038 145 / 0.7);
+  color: rgba(197, 155, 108, 0.7);
   transform: scaleX(-1);
   animation-delay: 1.2s !important;
 }
@@ -506,66 +597,103 @@ section {
   .hero-sprig-right { right: 4rem; width: 6rem; }
 }
 
+@keyframes cardFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 #hero-content {
   position: relative;
   z-index: 10;
   text-align: center;
-  padding: 6rem 1.5rem;
-  max-width: 48rem;
+  padding: 3.5rem 2rem;
+  max-width: 44rem;
+  width: calc(100% - 2.5rem);
+  margin: 3rem auto;
+  background: rgba(255, 255, 255, 0.83);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1.75rem;
+  border: 1px solid rgba(197, 155, 108, 0.38);
+  box-shadow: 0 25px 60px rgba(45, 18, 26, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+  color: var(--espresso);
+  animation: cardFadeInUp 1.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (min-width: 768px) {
+  #hero-content {
+    padding: 4.5rem 3.5rem;
+  }
 }
 
 .hero-divider {
-  margin: 2rem 0;
+  margin: 2.25rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  color: var(--rose-deep);
+  gap: 1.25rem;
+  color: var(--burgundy);
 }
 .hero-divider span {
   display: block;
   height: 1px;
-  width: 3rem;
-  background: oklch(0.82 0.075 15 / 0.6);
+  width: 3.5rem;
+  background: rgba(197, 155, 108, 0.6);
 }
 
-#hero h1 { line-height: 0.9; color: var(--ink); }
+#hero h1 { line-height: 1.4; color: var(--burgundy); }
 #hero .hero-title {
   display: block;
-  font-family: "Pinyon Script", cursive;
-  color: var(--rose-deep);
-  font-size: clamp(3.75rem, 10vw, 6rem);
+  font-family: "Aref Ruqaa", "Amiri", serif;
+  color: var(--burgundy);
+  font-size: clamp(3rem, 7vw, 5.25rem);
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
 }
 #hero .hero-sub {
   display: block;
-  margin-top: 1.5rem;
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  margin-top: 1.25rem;
+  font-family: "Tajawal", "Cairo", sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  color: var(--espresso);
+  line-height: 1.8;
 }
 
 #hero-poem {
-  margin-top: 2.5rem;
-  color: oklch(0.32 0.04 25 / 0.75);
-  max-width: 32rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: var(--espresso);
+  max-width: 34rem;
   margin-left: auto;
   margin-right: auto;
-  font-size: clamp(1rem, 2vw, 1.125rem);
-  line-height: 1.8;
-  font-style: italic;
-  font-weight: 300;
+  font-family: "Tajawal", "Cairo", sans-serif;
+  font-size: clamp(1.1rem, 2.2vw, 1.25rem);
+  line-height: 2.1;
+  font-weight: 400;
 }
 #hero-poem .poem-love {
-  font-family: "Pinyon Script", cursive;
-  font-size: clamp(1.5rem, 4vw, 1.875rem);
+  font-family: "Aref Ruqaa", "Amiri", serif;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
   vertical-align: middle;
-  margin-left: 0.5rem;
-  color: var(--rose-deep);
+  margin-inline-start: 0.5rem;
+  color: var(--burgundy);
   font-style: normal;
 }
 
 .hero-date {
-  font-family: "Pinyon Script", cursive;
-  color: var(--rose-deep);
-  font-size: clamp(3rem, 8vw, 4.5rem);
+  font-family: "Tajawal", "Cairo", sans-serif;
+  color: var(--burgundy);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 700;
+  margin-top: 1.5rem;
+  letter-spacing: 0;
 }
 
 #hero-scroll-hint {

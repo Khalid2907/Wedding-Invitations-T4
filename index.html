@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400;500&family=Pinyon+Script&family=Amiri:ital,wght@0,400;0,700;1,400&family=Marhey:wght@400;500;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Jost:wght@200;300;400;500&family=Pinyon+Script&family=Marhey:wght@400;500;700&display=swap"
   />
 
   <!-- Styles -->
@@ -28,8 +28,11 @@
 </head>
 <body>
 
-  <!-- ── Language Toggle ─────────────────────────────────── -->
-  <button id="lang-toggle" aria-label="Switch language">
+  <!-- ── Antigravity Particle Canvas ─────────────────────── -->
+  <canvas id="antigravity-canvas"></canvas>
+
+  <!-- ── Language Toggle (Glass Charm) ──────────────────── -->
+  <button id="lang-toggle" class="glass-charm floating-element" aria-label="Switch language">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <circle cx="12" cy="12" r="9"/>
       <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>
@@ -37,10 +40,10 @@
     <span class="lang-label">العربية</span>
   </button>
 
-  <!-- ── Preloader (filled by JS) ────────────────────────── -->
+  <!-- ── Preloader (3D Antigravity Floating Envelope) ────── -->
   <div id="preloader" aria-label="Open invitation"></div>
 
-  <!-- ── Floating Petals (filled by JS after open) ────────── -->
+  <!-- ── Floating Petals & Debris ────────────────────────── -->
   <div id="petals-container" aria-hidden="true"></div>
 
   <!-- ── Main Invitation ────────────────────────────────── -->
@@ -76,14 +79,17 @@
         </g>
       </svg>
 
-      <div id="hero-content" class="fade-up">
+      <div id="hero-content" class="fade-up card-stock floating-element">
         <p id="hero-eyebrow" class="eyebrow"></p>
 
         <div class="hero-divider">
           <span></span>
-          <svg class="svg-heart heartbeat" style="width:1.5rem;height:1.5rem;" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 21s-7-4.35-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3C21 5 23 8.5 21.5 12 19 16.65 12 21 12 21z"/>
-          </svg>
+          <!-- Velvet-textured floating black heart pearl -->
+          <div class="velvet-heart-pearl pulse-glow" aria-hidden="true">
+            <svg class="svg-heart" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21s-7-4.35-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3C21 5 23 8.5 21.5 12 19 16.65 12 21 12 21z"/>
+            </svg>
+          </div>
           <span></span>
         </div>
 
@@ -99,13 +105,18 @@
           <span id="hero-poem-love" class="poem-love"></span>
         </p>
 
-        <div class="ornament" aria-hidden="true">
+        <!-- Line-art Egyptian Lotus & Nile Sun Motif -->
+        <div class="ornament egyptian-motif" aria-hidden="true">
           <span class="ornament-line-left"></span>
-          <svg width="44" height="44" viewBox="0 0 44 44" class="ornament-icon sway-slow">
-            <g fill="none" stroke="currentColor" stroke-width="0.8">
-              <path d="M22 8 C 16 14, 12 18, 12 24 C 12 30, 16 34, 22 34 C 28 34, 32 30, 32 24 C 32 18, 28 14, 22 8 Z"/>
-              <path d="M22 14 C 19 18, 17 21, 17 24 C 17 28, 19 30, 22 30 C 25 30, 27 28, 27 24 C 27 21, 25 18, 22 14 Z" fill="currentColor" fill-opacity="0.15"/>
-              <circle cx="22" cy="24" r="2" fill="currentColor"/>
+          <svg width="54" height="44" viewBox="0 0 60 44" class="ornament-icon sway-slow">
+            <g fill="none" stroke="currentColor" stroke-width="1">
+              <!-- Egyptian Sun Disc & Rays -->
+              <circle cx="30" cy="16" r="6" fill="rgba(197,155,108,0.2)"/>
+              <path d="M30 4 V10 M20 10 L24 14 M40 10 L36 14"/>
+              <!-- Lotus Petals -->
+              <path d="M30 38 C 22 28, 14 30, 10 20 C 18 22, 26 28, 30 38 Z" fill="rgba(74,21,37,0.08)"/>
+              <path d="M30 38 C 38 28, 46 30, 50 20 C 42 22, 34 28, 30 38 Z" fill="rgba(74,21,37,0.08)"/>
+              <path d="M30 38 C 26 26, 26 18, 30 14 C 34 18, 34 26, 30 38 Z" fill="rgba(197,155,108,0.3)"/>
             </g>
           </svg>
           <span class="ornament-line-right"></span>
